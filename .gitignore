@@ -1,0 +1,10 @@
+/bin/
+/lib/
+/dataset/
+/.settings/
+
+*.*~
+.project
+.classpath
+*.jar
+/target/
