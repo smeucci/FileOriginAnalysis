@@ -1,8 +1,14 @@
-package utils;
+package util;
 
-import static tool.VFT.buildXMLDocumentFromTree;
-import io.FileReaderSaver;
+import static com.vftlite.core.VFT.*;
 
+import com.vftlite.io.FileReaderSaver;
+import com.vftlite.tree.Node;
+import com.vftlite.tree.Tree;
+import com.vftlite.tree.Field;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,9 +17,7 @@ import java.util.stream.Stream;
 
 import org.jdom2.Document;
 
-import tree.*;
-
-public class Utils {
+public class Util {
 
 	public static List<String> parseClassFilesList(String url) {
 		//TODO if files in the list are not xml but mp4, convert them
@@ -33,11 +37,11 @@ public class Utils {
 		return new Node(0, "root", 0, null, fields);
 	}
 	
-	public static int[] parseWeights(String str) {
+	public static double[] parseWeights(String str) {
 		String[] splits = str.replaceAll("\\[|\\]", "").split("\\,");
-		int[] weights = new int[splits.length];
+		double[] weights = new double[splits.length];
 		for (int i = 0; i < splits.length; i++) {
-			weights[i] = Integer.parseInt(splits[i]);
+			weights[i] = Double.parseDouble(splits[i]);
 		}
 		return weights;
 	}
@@ -47,6 +51,14 @@ public class Utils {
 		FileReaderSaver fileSaver = new FileReaderSaver(name, outputPath);
 		fileSaver.saveOnFile(document);
 		System.out.println("Saved '" + fileSaver.getDestinationPath() + "'");
+	}
+	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 }

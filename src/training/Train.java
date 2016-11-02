@@ -2,12 +2,13 @@ package training;
 
 import java.util.Iterator;
 
-import tree.Field;
-import tree.Tree;
+import com.vftlite.tree.Field;
+import com.vftlite.tree.Tree;
+
 import videoclass.VideoClass;
-import static tool.VFT.*;
-import static utils.Utils.*;
+import static com.vftlite.core.VFT.*;
 import static util.Util.*;
+import static com.vftlite.util.Util.*;
 
 public class Train {
 
@@ -37,13 +38,14 @@ public class Train {
 		saveTree(config, "configBA", this.outputPath);
 		
 		for (String file: this.classA.getXmlFiles()) {
-			computeWeights(config, buildTreeFromXMLFile(file));
+			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getXmlFiles().size());
 		}
+		
 		saveTree(config, "configAB-w", this.outputPath);
 		
 		Tree config2 = buildTreeFromXMLFile(this.outputPath + "configBA.xml");
 		for (String file: this.classB.getXmlFiles()) {
-			computeWeights(config2, buildTreeFromXMLFile(file));
+			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getXmlFiles().size());
 		}
 		saveTree(config2, "configBA-w", this.outputPath);
 		
@@ -52,7 +54,6 @@ public class Train {
 	}
 	
 	protected Tree createClassConfig(VideoClass _class, String outputPath, boolean withAttributes) throws Exception {
-				
 		Tree config = createRootTree();
 		for (String file: _class.getXmlFiles()) {
 			Tree tree = buildTreeFromXMLFile(file);
@@ -66,8 +67,7 @@ public class Train {
 		return a;
 	}
 	
-	protected void computeWeights(Tree config, Tree tree) {
-				
+	protected void computeWeights(Tree config, Tree tree, int numOfVideos) {
 		if (config.getNumChildren() > 0) {
 			Iterator<Tree> configIterator = config.iterator();
 			while(configIterator.hasNext()) {
@@ -93,15 +93,14 @@ public class Train {
 				}
 				
 				if (isPresent) {
-					updateWeights(configChild, toCheck);
-					computeWeights(configChild, toCheck);
+					updateWeights(configChild, toCheck, numOfVideos);
+					computeWeights(configChild, toCheck, numOfVideos);
 				}
 			}
 		}	
 	}
 	
-	protected void updateWeights(Tree config, Tree node) {
-		
+	protected void updateWeights(Tree config, Tree node, int numOfVideos) {
 		for (Field nodeField: node.getFieldsList()) {
 			
 			String nodeFieldName = nodeField.getName();
@@ -114,22 +113,21 @@ public class Train {
 				
 				String[] splits = configFieldValue.split("\\;");
 				String[] values = splits[0].replaceAll("\\[|\\]", "").split("\\,");
-				int[] weights = parseWeights(splits[1]);
+				double[] weights = parseWeights(splits[1]);
 				
 				for (int i = 0; i < values.length; i++) {
 					if (values[i].equals(nodeFieldValue)) {
-						weights[i]++;
+						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 4);
 					}
 				}
 				
 				String result = updateFieldValue(values, weights);
 				configField.setvalue(result);
 			}
-		}
-		
+		}	
 	}
 	
-	protected String updateFieldValue(String[] values, int[] weights) {
+	protected String updateFieldValue(String[] values, double[] weights) {
 		StringBuffer result = new StringBuffer();
 		result.append("[");
 		for (int i = 0; i < values.length; i++) {
