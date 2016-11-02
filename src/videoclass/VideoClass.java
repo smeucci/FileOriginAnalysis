@@ -2,7 +2,7 @@ package videoclass;
 
 import java.util.List;
 
-import static util.Util.*;
+import static utils.Utils.*;
 
 public class VideoClass {
 

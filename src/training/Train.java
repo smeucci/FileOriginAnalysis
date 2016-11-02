@@ -7,7 +7,7 @@ import com.vftlite.tree.Tree;
 
 import videoclass.VideoClass;
 import static com.vftlite.core.VFT.*;
-import static util.Util.*;
+import static utils.Utils.*;
 import static com.vftlite.util.Util.*;
 
 public class Train {

@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 import static com.vftlite.core.VFT.*;
 
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 import org.jdom2.Document;
 
-public class Util {
+public class Utils {
 
 	public static List<String> parseClassFilesList(String url) {
 		//TODO if files in the list are not xml but mp4, convert them
