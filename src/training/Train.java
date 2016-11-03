@@ -12,7 +12,6 @@ import static com.vftlite.util.Util.*;
 
 public class Train {
 
-	
 	private VideoClass classA;
 	private VideoClass classB;
 	private String outputPath;
@@ -27,23 +26,21 @@ public class Train {
 	
 	public void train() throws Exception {
 		
-		Tree configA = createClassConfig(this.classA, this.outputPath, this.withAttributes);
-		Tree configB = createClassConfig(this.classB, this.outputPath, this.withAttributes);
+		Tree configA = createClassConfig(this.classA, this.withAttributes);
+		Tree configB = createClassConfig(this.classB, this.withAttributes);
 		
 		saveTree(configA, this.classA.getName() + "-config", this.outputPath);
 		saveTree(configB, this.classB.getName() + "-config", this.outputPath);
 		
 		Tree config = mergeClassConfig(configA, configB);
-		saveTree(config, "configAB", this.outputPath);
-		saveTree(config, "configBA", this.outputPath);
+		Tree config2 = config.cloneAll();
+		saveTree(config, "config", this.outputPath);
 		
 		for (String file: this.classA.getXmlFiles()) {
 			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getXmlFiles().size());
 		}
-		
 		saveTree(config, "configAB-w", this.outputPath);
 		
-		Tree config2 = buildTreeFromXMLFile(this.outputPath + "configBA.xml");
 		for (String file: this.classB.getXmlFiles()) {
 			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getXmlFiles().size());
 		}
@@ -53,7 +50,7 @@ public class Train {
 		
 	}
 	
-	protected Tree createClassConfig(VideoClass _class, String outputPath, boolean withAttributes) throws Exception {
+	protected Tree createClassConfig(VideoClass _class, boolean withAttributes) throws Exception {
 		Tree config = createRootTree();
 		for (String file: _class.getXmlFiles()) {
 			Tree tree = buildTreeFromXMLFile(file);
