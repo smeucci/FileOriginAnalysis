@@ -29,8 +29,8 @@ public class Train {
 		Tree configA = createClassConfig(this.classA, this.withAttributes);
 		Tree configB = createClassConfig(this.classB, this.withAttributes);
 		
-		saveTree(configA, this.classA.getName() + "-config", this.outputPath);
-		saveTree(configB, this.classB.getName() + "-config", this.outputPath);
+		saveTree(configA, "merge" + this.classA.getName(), this.outputPath);
+		saveTree(configB, "merge" + this.classB.getName(), this.outputPath);
 		
 		Tree config = mergeClassConfig(configA, configB);
 		Tree config2 = config.cloneAll();
@@ -39,12 +39,12 @@ public class Train {
 		for (String file: this.classA.getXmlFiles()) {
 			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getXmlFiles().size());
 		}
-		saveTree(config, "configAB-w", this.outputPath);
+		saveTree(config, "configA-w", this.outputPath);
 		
 		for (String file: this.classB.getXmlFiles()) {
 			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getXmlFiles().size());
 		}
-		saveTree(config2, "configBA-w", this.outputPath);
+		saveTree(config2, "configB-w", this.outputPath);
 		
 		System.out.println("DONE");
 		
