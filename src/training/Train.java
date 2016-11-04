@@ -26,13 +26,13 @@ public class Train {
 	
 	public void train() throws Exception {
 		
-		Tree configA = createClassConfig(this.classA, this.withAttributes);
-		Tree configB = createClassConfig(this.classB, this.withAttributes);
+		Tree mergeA = createClassConfig(this.classA, this.withAttributes);
+		Tree mergeB = createClassConfig(this.classB, this.withAttributes);
 		
-		saveTree(configA, "merge" + this.classA.getName(), this.outputPath);
-		saveTree(configB, "merge" + this.classB.getName(), this.outputPath);
+		saveTree(mergeA, "merge" + this.classA.getName(), this.outputPath);
+		saveTree(mergeB, "merge" + this.classB.getName(), this.outputPath);
 		
-		Tree config = mergeClassConfig(configA, configB);
+		Tree config = mergeClassConfig(mergeA, mergeB);
 		Tree config2 = config.cloneAll();
 		saveTree(config, "config", this.outputPath);
 		
@@ -94,7 +94,7 @@ public class Train {
 					computeWeights(configChild, toCheck, numOfVideos);
 				}
 			}
-		}	
+		}
 	}
 	
 	protected void updateWeights(Tree config, Tree node, int numOfVideos) {
