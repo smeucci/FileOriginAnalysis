@@ -36,4 +36,7 @@ public class VideoClass {
 		return this.xmlfiles;
 	}
 	
+	public int getNumXmlFiles() {
+		return this.xmlfiles.size();
+	}
 }

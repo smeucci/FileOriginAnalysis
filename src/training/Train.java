@@ -37,12 +37,12 @@ public class Train {
 		saveTree(config, "config", this.outputPath);
 		
 		for (String file: this.classA.getXmlFiles()) {
-			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getXmlFiles().size());
+			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getNumXmlFiles());
 		}
 		saveTree(config, "configA-w", this.outputPath);
 		
 		for (String file: this.classB.getXmlFiles()) {
-			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getXmlFiles().size());
+			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getNumXmlFiles());
 		}
 		saveTree(config2, "configB-w", this.outputPath);
 		
