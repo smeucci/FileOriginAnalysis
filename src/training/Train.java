@@ -8,7 +8,6 @@ import com.vftlite.tree.Tree;
 import videoclass.VideoClass;
 import static com.vftlite.core.VFT.*;
 import static utils.Utils.*;
-import static com.vftlite.util.Util.*;
 
 public class Train {
 
@@ -67,29 +66,11 @@ public class Train {
 	protected void computeWeights(Tree config, Tree tree, int numOfVideos) {
 		if (config.getNumChildren() > 0) {
 			Iterator<Tree> configIterator = config.iterator();
-			while(configIterator.hasNext()) {
-				boolean isPresent = false;
-				Tree toCheck = null;
-				Tree configChild = configIterator.next();
+			while (configIterator.hasNext()) {
+				Tree configChild = configIterator.next();				
+				Tree toCheck = getCorrespondingChildTree(configChild, tree);
 				
-				Iterator<Tree> treeIterator = tree.iterator();
-				if (treeIterator != null) {
-					while(treeIterator.hasNext() && !isPresent) {
-						Tree treeChild = treeIterator.next();
-						if (configChild.getName().equals(treeChild.getName()) && !treeChild.getName().equals("trak")) {
-							isPresent = true;
-							toCheck = treeChild;
-						} else if (contains(checkTrakType(treeChild), "vide") && contains(checkTrakType(configChild), "vide")) {	
-							isPresent = true;
-							toCheck = treeChild;	
-						} else if (contains(checkTrakType(treeChild), "soun") && contains(checkTrakType(configChild), "soun")) {
-							isPresent = true;
-							toCheck = treeChild;
-						}						
-					}
-				}
-				
-				if (isPresent) {
+				if (toCheck != null) {
 					updateWeights(configChild, toCheck, numOfVideos);
 					computeWeights(configChild, toCheck, numOfVideos);
 				}
@@ -121,7 +102,7 @@ public class Train {
 				String result = updateFieldValue(values, weights);
 				configField.setvalue(result);
 			}
-		}	
+		}
 	}
 	
 	protected String updateFieldValue(String[] values, double[] weights) {
