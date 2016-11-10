@@ -35,14 +35,20 @@ public class Train {
 		Tree config2 = config.cloneAll();
 		saveTree(config, "config", this.outputPath);
 		
+		int i = 0;
 		for (String file: this.classA.getXmlFiles()) {
 			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getNumXmlFiles());
+			i++;
 		}
+		config.addField("numOfVideos", String.valueOf(i));
 		saveTree(config, "configA-w", this.outputPath);
 		
+		int j = 0;
 		for (String file: this.classB.getXmlFiles()) {
 			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getNumXmlFiles());
+			j++;
 		}
+		config2.addField("numOfVideos", String.valueOf(j));
 		saveTree(config2, "configB-w", this.outputPath);
 		
 		System.out.println("DONE");
