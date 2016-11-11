@@ -1,0 +1,4 @@
+#!/bin/bash
+
+BINPATH=$(dirname $(readlink -f $0))
+java -jar $BINPATH/../target/foa.jar $@
