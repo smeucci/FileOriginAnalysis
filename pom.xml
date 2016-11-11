@@ -1,57 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.smeucci.FileOriginAnalysis</groupId>
-  <artifactId>FileOriginAnalysis</artifactId>
+  <groupId>com.github.smeucci.VideoFormatAnalysis</groupId>
+  <artifactId>VideoFormatAnalysis</artifactId>
+  <version>0.0.1</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <finalName>foa</finalName>
     <plugins>
-    
-      <!-- Set a JDK compiler level -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source/>
+          <target/>
         </configuration>
       </plugin>
-      
-      <!-- download source code in Eclipse, best practice -->
-	  <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-eclipse-plugin</artifactId>
-		<version>2.9</version>
-		<configuration>
-			<downloadSources>true</downloadSources>
-			<downloadJavadocs>false</downloadJavadocs>
-		</configuration>
-	 </plugin>
-	 
-	 <!-- Maven Shade Plugin -->
-	 <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-shade-plugin</artifactId>
-	  	<version>2.4.3</version>
-	  	<executions>
-	     <!-- Run shade goal on package phase -->
-	    <execution>
-		  <phase>package</phase>
-		  <goals>
-			<goal>shade</goal>
-		  </goals>
-		  <configuration>
-		    <transformers>
-			<!-- add Main-Class to manifest file -->
-              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-			   <mainClass>main.Main</mainClass>
-			</transformer>
-		  </transformers>
-		</configuration>
-	      </execution>
-	  	 </executions>
-	  </plugin>
-	 
     </plugins>
   </build>
   <dependencies>
@@ -65,13 +27,5 @@
   		<artifactId>commons-cli</artifactId>
   		<version>1.3.1</version>
   	</dependency>
-  	<dependency>
-	    <groupId>com.github.smeucci.vft-lite</groupId>
-	    <artifactId>vft-lite</artifactId>
-	    <version>0.0.1</version>
-	    <scope>system</scope>
-	    <systemPath>/home/saverio/Projects/vft-lite/target/vft.jar</systemPath>
-	</dependency>
   </dependencies>
-  <version>0.0.1</version>
 </project>
