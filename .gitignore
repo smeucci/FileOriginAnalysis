@@ -1,4 +1,3 @@
-/bin/
 /lib/
 /doc/
 /dataset/
@@ -9,3 +8,4 @@
 .classpath
 *.jar
 /target/
+dependency-reduced-pom.xml
