@@ -58,26 +58,33 @@ public class Test {
 				String nodeFieldValue = nodeField.getValue();
 				
 				if (unusedField(nodeFieldName) == false) {
-					if (verbose) System.out.println(nodeFieldName);
-					String configFieldValuesA = configA.getFieldByName(nodeFieldName).getValue();
-					String configFieldValuesB = configB.getFieldByName(nodeFieldName).getValue();
+					if (verbose) System.out.println(nodeFieldName);					
+					Field configFieldA = configA.getFieldByName(nodeFieldName);
+					Field configFieldB = configB.getFieldByName(nodeFieldName);
 					
-					String[] splitsA = configFieldValuesA.split("\\;");
-					String[] valuesA = splitsA[0].replaceAll("\\[|\\]", "").split("\\,");
-					double[] weightsA = parseWeights(splitsA[1]);
-					
-					String[] splitsB = configFieldValuesB.split("\\;");
-					String[] valuesB = splitsB[0].replaceAll("\\[|\\]", "").split("\\,");
-					double[] weightsB = parseWeights(splitsB[1]);
-					
-					double numerator = getValueWeight(nodeFieldValue, valuesA, weightsA);
-					double denominator = getValueWeight(nodeFieldValue, valuesB, weightsB);
-					likelihood(numerator, denominator);
+					if (configFieldA != null && configFieldB != null) {
+						String configFieldValuesA = configFieldA.getValue();
+						String configFieldValuesB = configFieldB.getValue();
+						
+						String[] splitsA = configFieldValuesA.split("\\;");
+						String[] valuesA = splitsA[0].replaceAll("\\[|\\]", "").split("\\,");
+						double[] weightsA = parseWeights(splitsA[1]);
+						
+						String[] splitsB = configFieldValuesB.split("\\;");
+						String[] valuesB = splitsB[0].replaceAll("\\[|\\]", "").split("\\,");
+						double[] weightsB = parseWeights(splitsB[1]);
+						
+						double numerator = getValueWeight(nodeFieldValue, valuesA, weightsA);
+						double denominator = getValueWeight(nodeFieldValue, valuesB, weightsB);
+						likelihood(numerator, denominator);
+					} else {
+						likelihood(0, 0);
+					}
 				}
 			}
 		} else {
 			if (verbose) System.out.println("NEW: " + node.getName());
-			likelihood(0, 0);
+			likelihood(0, 0); //TODO should cycle through attributes
 		}
 	}
 	
