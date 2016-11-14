@@ -60,4 +60,12 @@ public class Utils {
 	    return bd.doubleValue();
 	}
 	
+	public static Boolean unusedField(String field) {
+		if (field.matches("stuff|creationTime|modificationTime")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
