@@ -15,7 +15,14 @@ public class Main {
 			VideoClass classB = new VideoClass("B", cmd.getOptionValue("listB"));
 			new Train(classA, classB, cmd.getOptionValue("output"), true).train();
 		} else if (cmd.hasOption("test")) {
-			new Test(cmd.getOptionValue("input"), cmd.getOptionValue("configA"), cmd.getOptionValue("configB")).test();
+			String video = cmd.getOptionValue("input");
+			String configA = cmd.getOptionValue("configA");
+			String configB = cmd.getOptionValue("configB");
+			if (cmd.hasOption("verbose")) {
+				new Test(video, configA, configB, true).test();
+			} else {
+				new Test(video, configA, configB, false).test();
+			}
 		}
 	}
 
@@ -76,6 +83,12 @@ public class Main {
 				.desc("xml config file for class B, only for --test")
 				.build();
 		opts.addOption(configB_opt);
+		
+		Option verbose_opt = Option.builder("v")
+				.longOpt("verbose")
+				.desc("whether or not display information, only for --test")
+				.build();
+		opts.addOption(verbose_opt);
 		
 		CommandLine cl = null;
 		HelpFormatter formatter = new HelpFormatter();

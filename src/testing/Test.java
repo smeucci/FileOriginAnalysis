@@ -1,7 +1,7 @@
 package testing;
 
 import static com.vftlite.core.VFT.*;
-import static utils.Utils.parseWeights;
+import static utils.Utils.*;
 
 import java.util.Iterator;
 
@@ -15,12 +15,14 @@ public class Test {
 	private String config_B;
 	private int numA;
 	private int numB;
+	private boolean verbose;
 	private static double likelihood = 1;
 	
-	public Test(String video, String config_A, String config_B) {
+	public Test(String video, String config_A, String config_B, boolean verbose) {
 		this.video = video;
 		this.config_A = config_A;
 		this.config_B = config_B;
+		this.verbose = verbose;
 	}
 	
 	public void test() throws Exception {
@@ -55,8 +57,8 @@ public class Test {
 				String nodeFieldName = nodeField.getName();
 				String nodeFieldValue = nodeField.getValue();
 				
-				if (!nodeFieldName.equals("stuff")) {
-					System.out.println(nodeFieldName);
+				if (unusedField(nodeFieldName) == false) {
+					if (verbose) System.out.println(nodeFieldName);
 					String configFieldValuesA = configA.getFieldByName(nodeFieldName).getValue();
 					String configFieldValuesB = configB.getFieldByName(nodeFieldName).getValue();
 					
@@ -74,7 +76,7 @@ public class Test {
 				}
 			}
 		} else {
-			System.out.println("NEW: " + node.getName());
+			if (verbose) System.out.println("NEW: " + node.getName());
 			likelihood(0, 0);
 		}
 	}
@@ -91,16 +93,16 @@ public class Test {
 	protected void likelihood(double numerator, double denominator) {
 		if (denominator == 0 && numerator != 0) {
 			likelihood = likelihood * (numerator / (1 / (double) this.numB));
-			System.out.println(likelihood + " - " + (numerator / (1 / (double) this.numB)) + " - " + 1);
+			if (verbose) System.out.println(likelihood + " - " + (numerator / (1 / (double) this.numB)) + " - " + 1);
 		} else if (numerator == 0 && denominator != 0) {
 			likelihood = likelihood * ((1 / (double) this.numA) / denominator);
-			System.out.println(likelihood + " - " + ((1 / (double) this.numA) / denominator) + " - " + 2);
+			if (verbose) System.out.println(likelihood + " - " + ((1 / (double) this.numA) / denominator) + " - " + 2);
 		} else if (numerator == 0 && denominator == 0) {
 			likelihood = likelihood * (1 / (double) this.numA);
-			System.out.println(likelihood + " - " + (1 / (double) this.numA) + " - " + 34);
+			if (verbose) System.out.println(likelihood + " - " + (1 / (double) this.numA) + " - " + 34);
 		} else {
 			likelihood = likelihood * (numerator / denominator);
-			System.out.println(likelihood + " - " + (numerator / denominator) + " - " + 0);
+			if (verbose) System.out.println(likelihood + " - " + (numerator / denominator) + " - " + 0);
 		}
 	}
 	

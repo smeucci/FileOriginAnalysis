@@ -90,7 +90,7 @@ public class Train {
 			String nodeFieldName = nodeField.getName();
 			String nodeFieldValue = nodeField.getValue();
 			
-			if (!nodeFieldName.equals("stuff")) {
+			if (!nodeFieldName.equals("stuff")) { //TODO change to unusedField (also in vft-lite)
 				
 				Field configField = config.getFieldByName(nodeFieldName);
 				String configFieldValue = configField.getValue();
@@ -101,7 +101,7 @@ public class Train {
 				
 				for (int i = 0; i < values.length; i++) {
 					if (values[i].equals(nodeFieldValue)) {
-						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 4);
+						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 5); //TODO precision issue, es. 1/33
 					}
 				}
 				
