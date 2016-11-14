@@ -36,7 +36,7 @@ public class Test {
 	}
 	
 	protected void computeLikelihood(Tree tree, Tree configA, Tree configB) {
-		if (tree.getNumChildren() > 0) {
+		if (tree.isLeaf() == false) {
 			Iterator<Tree> treeIterator = tree.iterator();
 			while (treeIterator.hasNext()) {
 				Tree treeChild = treeIterator.next();

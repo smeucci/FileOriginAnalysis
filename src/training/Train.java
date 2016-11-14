@@ -70,7 +70,7 @@ public class Train {
 	}
 	
 	protected void computeWeights(Tree config, Tree tree, int numOfVideos) {
-		if (config.getNumChildren() > 0) {
+		if (config.isLeaf() == false) {
 			Iterator<Tree> configIterator = config.iterator();
 			while (configIterator.hasNext()) {
 				Tree configChild = configIterator.next();				
