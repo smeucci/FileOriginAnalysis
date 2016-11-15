@@ -51,7 +51,8 @@ public class Test {
 		}
 	}
 	
-	protected void updateLikelihood(Tree node, Tree configA, Tree configB) {	
+	protected void updateLikelihood(Tree node, Tree configA, Tree configB) {
+		//TODO compute entropy
 		if (configA != null && configB != null) {
 			for (Field nodeField: node.getFieldsList()) {
 				String nodeFieldName = nodeField.getName();
@@ -84,7 +85,7 @@ public class Test {
 			}
 		} else {
 			if (verbose) System.out.println("NEW: " + node.getName());
-			likelihood(0, 0); //TODO should cycle through attributes
+			likelihood(0, 0); //TODO to remove
 		}
 	}
 	
@@ -98,18 +99,19 @@ public class Test {
 	}
 	
 	protected void likelihood(double numerator, double denominator) {
+		//TODO mettere 1
 		if (denominator == 0 && numerator != 0) {
-			likelihood = likelihood * (numerator / (1 / (double) this.numB));
 			if (verbose) System.out.println(likelihood + " - " + (numerator / (1 / (double) this.numB)) + " - " + 1);
+			likelihood = likelihood * (numerator / (1 / (double) this.numB));
 		} else if (numerator == 0 && denominator != 0) {
-			likelihood = likelihood * ((1 / (double) this.numA) / denominator);
 			if (verbose) System.out.println(likelihood + " - " + ((1 / (double) this.numA) / denominator) + " - " + 2);
+			likelihood = likelihood * ((1 / (double) this.numA) / denominator);
 		} else if (numerator == 0 && denominator == 0) {
-			likelihood = likelihood * (1 / (double) this.numA);
 			if (verbose) System.out.println(likelihood + " - " + (1 / (double) this.numA) + " - " + 34);
+			likelihood = likelihood * (1 / (double) this.numA);
 		} else {
-			likelihood = likelihood * (numerator / denominator);
 			if (verbose) System.out.println(likelihood + " - " + (numerator / denominator) + " - " + 0);
+			likelihood = likelihood * (numerator / denominator);
 		}
 	}
 	
