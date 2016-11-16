@@ -101,7 +101,7 @@ public class Train {
 				
 				for (int i = 0; i < values.length; i++) {
 					if (values[i].equals(nodeFieldValue)) {
-						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 5); //TODO precision issue, es. 1/33
+						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 3); //TODO precision issue, es. 1/33
 					}
 				}
 				
