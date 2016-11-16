@@ -61,11 +61,16 @@ public class Utils {
 	}
 	
 	public static Boolean unusedField(String field) {
-		if (field.matches("stuff|creationTime|modificationTime")) {
+		if (field.matches("stuff|creationTime|modificationTime|size")) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public static void printDebug(double likelihood, double ratio, double numerator, double denominator, int type) {
+		System.out.println("Likelihood: " + likelihood + " - ratio: " + ratio + " - wA: " + numerator + " - wB: " + denominator 
+				+ " - case: " + type);
 	}
 	
 }
