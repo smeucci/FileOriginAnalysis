@@ -15,14 +15,15 @@ public class Main {
 			VideoClass classB = new VideoClass("B", cmd.getOptionValue("listB"));
 			new Train(classA, classB, cmd.getOptionValue("output"), true).train();
 		} else if (cmd.hasOption("test")) {
-			String video = cmd.getOptionValue("input");
+			String url = cmd.getOptionValue("input");
 			String configA = cmd.getOptionValue("configA");
 			String configB = cmd.getOptionValue("configB");
-			if (cmd.hasOption("verbose")) {
-				new Test(video, configA, configB, true).test();
+			boolean verbose = (cmd.hasOption("verbose")) ? true : false;
+			if (url.endsWith("txt")) {
+				new Test(url, configA, configB, verbose).batchTest();
 			} else {
-				new Test(video, configA, configB, false).test();
-			}
+				new Test(url, configA, configB, verbose).test();
+			}	
 		}
 	}
 
