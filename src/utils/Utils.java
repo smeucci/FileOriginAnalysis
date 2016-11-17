@@ -12,7 +12,9 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.jdom2.Document;
@@ -29,6 +31,22 @@ public class Utils {
 			System.out.println(e.getMessage());
 		}
 		return lines;
+	}
+	
+	public static Map<String, String> parseTestFilesList(String url) {
+		Map<String, String> urls = new HashMap<String, String>();
+		List<String> lines = new ArrayList<String>();
+		try (Stream<String> stream = Files.lines(Paths.get(url))) {
+	        stream.forEach(str -> lines.add(str));    
+	        for (String line: lines) {
+	        	String[] splits = line.split(",");
+	        	urls.put(splits[0], splits[1]);
+	        }    
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return urls;
 	}
 	
 	public static Tree createRootTree() {
