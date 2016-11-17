@@ -53,7 +53,7 @@ public class Test {
 	}
 	
 	public void batchTest() throws Exception {
-		List<Pair<String>> labels = new ArrayList<Pair<String>>();
+		List<Pair<String, String>> labels = new ArrayList<Pair<String, String>>();
 		for (Map.Entry<String, String> entry : this.videos.entrySet()) {
 			this.video = entry.getKey();
 			String label = entry.getValue();
@@ -66,15 +66,15 @@ public class Test {
 							  + " - likelihood: " + likelihood + "\n"
 							  + " - Loglikelihood: " + log(likelihood));
 			
-			labels.add(new Pair<String>(label, predictedLabel));	
+			labels.add(new Pair<String, String>(label, predictedLabel));	
 			likelihood = 1;
 		}
 		accuracy(labels);
 	}
 	
-	protected void accuracy(List<Pair<String>> labels) {
+	protected void accuracy(List<Pair<String, String>> labels) {
 		double correctlyPredicted = 0;
-		for (Pair<String> pair: labels) {
+		for (Pair<String, String> pair: labels) {
 			if (pair.getKey().equals(pair.getValue())) {
 				correctlyPredicted++;
 			}

@@ -1,11 +1,11 @@
 package utils;
 
-public class Pair<T> {
+public class Pair<T, K> {
 
 	private T key;
-	private T value;
+	private K value;
 	
-	public Pair(T key, T value) {
+	public Pair(T key, K value) {
 		this.key = key;
 		this.value = value;	
 	}
@@ -14,7 +14,7 @@ public class Pair<T> {
 		return this.key;
 	}
 	
-	public T getValue() {
+	public K getValue() {
 		return this.value;
 	}
 	
