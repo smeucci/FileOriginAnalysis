@@ -5,11 +5,14 @@ public class Pair<T, K> {
 	private T first;
 	private K second;
 	
-	public Pair() {}
+	public Pair() {
+		this.first = null;
+		this.second = null;
+	}
 	
 	public Pair(T first, K second) {
 		this.first = first;
-		this.second = second;	
+		this.second = second;
 	}
 	
 	public T getFirst() {
@@ -26,6 +29,14 @@ public class Pair<T, K> {
 	
 	public void setSecond(K second) {
 		this.second = second;
+	}
+	
+	public boolean isNull() {
+		if (this.first == null || this.second == null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
