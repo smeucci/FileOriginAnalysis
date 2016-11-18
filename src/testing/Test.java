@@ -137,7 +137,7 @@ public class Test {
 		configFields.setFirst(config.getFirst().getFieldByName(nodeFieldName));
 		configFields.setSecond(config.getSecond().getFieldByName(nodeFieldName));
 		
-		if (configFields.getFirst() != null && config.getSecond() != null) {
+		if (configFields.getFirst() != null && configFields.getSecond() != null) {
 			String configFieldValuesA = configFields.getFirst().getValue();
 			String configFieldValuesB = configFields.getSecond().getValue();
 			
