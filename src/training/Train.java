@@ -31,27 +31,25 @@ public class Train {
 		saveTree(mergeA, "merge" + this.classA.getName(), this.outputPath);
 		saveTree(mergeB, "merge" + this.classB.getName(), this.outputPath);
 		
-		Tree config = mergeClassConfig(mergeA, mergeB);
-		Tree config2 = config.cloneAll();
-		saveTree(config, "config", this.outputPath);
+		Tree configA = mergeClassConfig(mergeA, mergeB);
+		Tree configB = configA.cloneAll(); //TODO why
+		saveTree(configA, "config", this.outputPath);
 		
 		int i = 0;
 		for (String file: this.classA.getXmlFiles()) {
-			computeWeights(config, buildTreeFromXMLFile(file), this.classA.getNumXmlFiles());
+			computeWeights(configA, buildTreeFromXMLFile(file), this.classA.getNumXmlFiles());
 			i++;
 		}
-		config.addField("numOfVideos", String.valueOf(i));
-		saveTree(config, "configA-w", this.outputPath);
+		configA.addField("numOfVideos", String.valueOf(i));
+		saveTree(configA, "configA-w", this.outputPath);
 		
 		int j = 0;
 		for (String file: this.classB.getXmlFiles()) {
-			computeWeights(config2, buildTreeFromXMLFile(file), this.classB.getNumXmlFiles());
+			computeWeights(configB, buildTreeFromXMLFile(file), this.classB.getNumXmlFiles());
 			j++;
 		}
-		config2.addField("numOfVideos", String.valueOf(j));
-		saveTree(config2, "configB-w", this.outputPath);
-		
-		System.out.println("DONE");
+		configB.addField("numOfVideos", String.valueOf(j));
+		saveTree(configB, "configB-w", this.outputPath);
 		
 	}
 	
@@ -103,7 +101,7 @@ public class Train {
 				
 				for (int i = 0; i < values.length; i++) {
 					if (values[i].equals(nodeFieldValue)) {
-						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 3); //TODO precision issue, es. 1/33
+						weights[i] = round((weights[i]) + (1 / (double) numOfVideos), 4); //TODO precision issue, es. 1/33
 					}
 				}
 				
