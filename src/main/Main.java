@@ -20,7 +20,7 @@ public class Main {
 			String configB = cmd.getOptionValue("configB");
 			boolean verbose = (cmd.hasOption("verbose")) ? true : false;
 			if (url.endsWith("txt")) {
-				new Test(url, configA, configB, verbose).batchTest();
+				new Test(url, configA, configB, false).batchTest();
 			} else {
 				new Test(url, configA, configB, verbose).test();
 			}	
