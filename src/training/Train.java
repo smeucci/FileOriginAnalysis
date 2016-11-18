@@ -65,8 +65,10 @@ public class Train {
 	}
 	
 	protected Tree mergeClassConfig(Tree a, Tree b) throws Exception {
-		mergeTree(a, b, this.withAttributes);
-		return a;
+		Tree config = createRootTree();
+		mergeTree(config, a, this.withAttributes);
+		mergeTree(config, b, this.withAttributes);
+		return config;
 	}
 	
 	protected void computeWeights(Tree config, Tree tree, int numOfVideos) {
