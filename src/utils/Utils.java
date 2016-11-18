@@ -21,14 +21,15 @@ import org.jdom2.Document;
 
 public class Utils {
 
+	private static Logger logger = new Logger();
+	
 	public static List<String> parseClassFilesList(String url) {
 		//TODO if files in the list are not xml but mp4, convert them
 		List<String> lines = new ArrayList<String>();
 		try (Stream<String> stream = Files.lines(Paths.get(url))) {
 	        stream.forEach(str -> lines.add(str));
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			logger.handleException(e);
 		}
 		return lines;
 	}
@@ -37,14 +38,13 @@ public class Utils {
 		Map<String, String> urls = new HashMap<String, String>();
 		List<String> lines = new ArrayList<String>();
 		try (Stream<String> stream = Files.lines(Paths.get(url))) {
-	        stream.forEach(str -> lines.add(str));    
+	        stream.forEach(str -> lines.add(str));
 	        for (String line: lines) {
 	        	String[] splits = line.split(",");
 	        	urls.put(splits[0], splits[1]);
 	        }    
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			logger.handleException(e);
 		}
 		return urls;
 	}
@@ -68,7 +68,7 @@ public class Utils {
 		Document document = buildXMLDocumentFromTree(tree);
 		FileReaderSaver fileSaver = new FileReaderSaver(name, outputPath);
 		fileSaver.saveOnFile(document);
-		System.out.println("Saved '" + fileSaver.getDestinationPath() + "'");
+		logger.handleSaveTree(fileSaver.getDestinationPath());
 	}
 	
 	public static double round(double value, int places) {
@@ -86,9 +86,16 @@ public class Utils {
 		}
 	}
 	
-	public static void printDebug(double ratio, double numerator, double denominator, int type) {
-		System.out.println("ratio: " + ratio + " - wA: " + numerator + " - wB: " + denominator 
-				+ " - case: " + type);
+	public static List<Pair<String, Double>> parseValueWeightCouples(String str) {
+		String[] splits = str.split("\\;");
+		String[] values = splits[0].replaceAll("\\[|\\]", "").split("\\,");
+		double[] weights = parseWeights(splits[1]);
+		
+		List<Pair<String, Double>> couples = new ArrayList<Pair<String,Double>>();
+		for (int i = 0; i < values.length; i++) {
+			couples.add(new Pair<String, Double>(values[i], weights[i]));
+		}
+		return couples;
 	}
 	
 }
