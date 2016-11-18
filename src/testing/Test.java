@@ -106,7 +106,7 @@ public class Test {
 	
 	protected void updateLikelihood(Tree node, Pair<Tree, Tree> config) {
 		double entropy, factor;
-		if (config.getFirst() != null && config.getSecond() != null) {		
+		if (config.isNull() == false) {
 			if (verbose) logger.handleBeginTag(node.getName());
 			List<Double> ratios = computeRatios(node.getFieldsList(), config);		
 			entropy = entropy(ratios);
@@ -137,7 +137,7 @@ public class Test {
 		configFields.setFirst(config.getFirst().getFieldByName(nodeFieldName));
 		configFields.setSecond(config.getSecond().getFieldByName(nodeFieldName));
 		
-		if (configFields.getFirst() != null && configFields.getSecond() != null) {
+		if (configFields.isNull() == false) {
 			String configFieldValuesA = configFields.getFirst().getValue();
 			String configFieldValuesB = configFields.getSecond().getValue();
 			
