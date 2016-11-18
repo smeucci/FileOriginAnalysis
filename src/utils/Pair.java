@@ -2,20 +2,30 @@ package utils;
 
 public class Pair<T, K> {
 
-	private T key;
-	private K value;
+	private T first;
+	private K second;
 	
-	public Pair(T key, K value) {
-		this.key = key;
-		this.value = value;	
+	public Pair() {}
+	
+	public Pair(T first, K second) {
+		this.first = first;
+		this.second = second;	
 	}
 	
-	public T getKey() {
-		return this.key;
+	public T getFirst() {
+		return this.first;
 	}
 	
-	public K getValue() {
-		return this.value;
+	public K getSecond() {
+		return this.second;
+	}
+	
+	public void setFirst(T first) {
+		this.first = first;
+	}
+	
+	public void setSecond(K second) {
+		this.second = second;
 	}
 	
 }
