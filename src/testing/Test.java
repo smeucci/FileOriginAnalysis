@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import utils.Logger;
@@ -111,6 +112,7 @@ public class Test {
 			List<Double> ratios = computeRatios(node.getFieldsList(), config);		
 			entropy = entropy(ratios);
 			factor = multiplyRatios(ratios, entropy);
+			//factor = attributesLikelihood(ratios, exponents(ratios));
 		} else {	
 			if (verbose) logger.handleNewTag(node.getName());
 			entropy = 0;
@@ -171,6 +173,16 @@ public class Test {
 		return pow(mult, exp); //TODO optimize
 	}
 	
+	protected double attributesLikelihood(List<Double> ratios, List<Double> exponents) {
+		double mult = 1;
+		for (int i = 0; i < ratios.size(); i++) {
+			double ratio = ratios.get(i);
+			double exp = exponents.get(i);
+			mult = mult * pow(ratio, exp);
+		}
+		return mult;
+	}
+	
 	protected void likelihood(double value) {
 		likelihood = likelihood * value;
 	}
@@ -184,8 +196,8 @@ public class Test {
 			ratio = round(((1 / (double) this.numA) / denominator), 4);
 			if (verbose) logger.handleDebug(ratio, numerator, denominator, 2);
 		} else if (numerator == 0 && denominator == 0) {
-			ratio = round((1 / (double) this.numA), 4);
-			if (verbose) logger.handleDebug(ratio, numerator, denominator, 34); //TODO 1?
+			ratio = round((1 / (double) this.numA), 4); //TODO 1?
+			if (verbose) logger.handleDebug(ratio, numerator, denominator, 34);
 		} else {
 			ratio = round((numerator / denominator), 4);
 			if (verbose) logger.handleDebug(ratio, numerator, denominator, 0);
@@ -202,6 +214,34 @@ public class Test {
 			entropy = entropy - (x * log(x));
 		}
 		return entropy;
+	}
+	
+	protected List<Double> exponents(List<Double> ratios) {
+		List<Double> entropies = entropies(ratios);
+		List<Double> exponents = new ArrayList<Double>();
+		double n = ratios.size();
+		for (double entropy: entropies) {
+			exponents.add(((n - 1)*entropy + 1) / n);
+		}
+		return exponents;
+	}
+	
+	protected List<Double> entropies(List<Double> list) {
+		Map<Double, Long> counts =
+			    list.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));		
+		List<Double> entropies = new ArrayList<Double>();
+		for (double element: list) {
+			Iterator<Entry<Double, Long>> itr = counts.entrySet().iterator();
+			while (itr.hasNext()) {
+				Map.Entry<Double, Long> pair = (Map.Entry<Double, Long>) itr.next();
+				if (pair.getKey() == element) {
+					double n = list.size();
+					double x = pair.getValue() / n;
+					entropies.add(-1*(n / log(n))*(x * log(x))); //TODO log(1) fix
+				}
+			}
+		}
+		return entropies;
 	}
 	
 }
