@@ -111,8 +111,8 @@ public class Test {
 			if (verbose) logger.handleBeginTag(node.getName());
 			List<Double> ratios = computeRatios(node.getFieldsList(), config);		
 			entropy = entropy(ratios);
-			factor = multiplyRatios(ratios, entropy);
-			//factor = attributesLikelihood(ratios, exponents(ratios));
+			//factor = multiplyRatios(ratios, entropy);
+			factor = attributesLikelihood(ratios, exponents(ratios));
 		} else {	
 			if (verbose) logger.handleNewTag(node.getName());
 			entropy = 0;
@@ -237,7 +237,8 @@ public class Test {
 				if (pair.getKey() == element) {
 					double n = list.size();
 					double x = pair.getValue() / n;
-					entropies.add(-1*(n / log(n))*(x * log(x))); //TODO log(1) fix
+					double norm = (n == 1) ? 1 : n / log(n);
+					entropies.add(-1*(norm)*(x * log(x)));
 				}
 			}
 		}
