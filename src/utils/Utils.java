@@ -79,7 +79,7 @@ public class Utils {
 	}
 	
 	public static Boolean unusedField(String field) {
-		if (field.matches("stuff|creationTime|modificationTime|size|duration")) {
+		if (field.matches("stuff|creationTime|modificationTime|size|duration")) { //TODO add entryCount and sampleCount?
 			return true;
 		} else {
 			return false;
