@@ -112,7 +112,7 @@ public class Test {
 			List<Double> ratios = computeRatios(node.getFieldsList(), config);		
 			entropy = entropy(ratios);
 			//factor = multiplyRatios(ratios, entropy);
-			factor = attributesLikelihood(ratios, exponents(ratios));
+			factor = attributesLikelihood(ratios);
 		} else {	
 			if (verbose) logger.handleNewTag(node.getName());
 			entropy = 0;
@@ -170,11 +170,12 @@ public class Test {
 			mult = mult * ratio;
 		}
 		double exp = (entropy == 0) ? (1 / ratios.size()) : 1;
-		return pow(mult, exp); //TODO optimize
+		return pow(mult, exp);
 	}
 	
-	protected double attributesLikelihood(List<Double> ratios, List<Double> exponents) {
+	protected double attributesLikelihood(List<Double> ratios) {
 		double mult = 1;
+		List<Double> exponents = exponents(ratios);
 		for (int i = 0; i < ratios.size(); i++) {
 			double ratio = ratios.get(i);
 			double exp = exponents.get(i);
