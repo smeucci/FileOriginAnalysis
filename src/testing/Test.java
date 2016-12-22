@@ -111,7 +111,6 @@ public class Test {
 			if (verbose) logger.handleBeginTag(node.getName());
 			List<Double> ratios = computeRatios(node.getFieldsList(), config);		
 			entropy = entropy(ratios);
-			//factor = multiplyRatios(ratios, entropy);
 			factor = attributesLikelihood(ratios);
 		} else {	
 			if (verbose) logger.handleNewTag(node.getName());
@@ -162,15 +161,6 @@ public class Test {
 			}
 		}
 		return 0;
-	}
-	
-	protected double multiplyRatios(List<Double> ratios, double entropy) {
-		double mult = 1;
-		for (double ratio: ratios) {
-			mult = mult * ratio;
-		}
-		double exp = (entropy == 0) ? (1 / ratios.size()) : 1;
-		return pow(mult, exp);
 	}
 	
 	protected double attributesLikelihood(List<Double> ratios) {
