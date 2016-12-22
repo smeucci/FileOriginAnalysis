@@ -86,6 +86,13 @@ public class Utils {
 		}
 	}
 	
+	public static Boolean unusedTag(Tree tree) {
+		if (tree.getName().contains("xyz")) return true;
+		if (tree.getName().contains("unkn-5")) return true;
+		if (tree.getName().contains("udta") && tree.getNumChildren() == 1 && tree.getChildByName("xyz-4") != null) return true; 
+		return false;
+	}
+	
 	public static List<Pair<String, Double>> parseValueWeightCouples(String str) {
 		String[] splits = str.split("\\;");
 		String[] values = splits[0].replaceAll("\\[|\\]", "").split("\\,");
