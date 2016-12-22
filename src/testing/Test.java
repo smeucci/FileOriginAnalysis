@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import utils.Logger;
@@ -218,20 +217,15 @@ public class Test {
 	}
 	
 	protected List<Double> entropies(List<Double> list) {
-		Map<Double, Long> counts =
+		Map<Double, Long> occurrences =
 			    list.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));		
 		List<Double> entropies = new ArrayList<Double>();
 		for (double element: list) {
-			Iterator<Entry<Double, Long>> itr = counts.entrySet().iterator();
-			while (itr.hasNext()) {
-				Map.Entry<Double, Long> pair = (Map.Entry<Double, Long>) itr.next();
-				if (pair.getKey() == element) {
-					double n = list.size();
-					double x = pair.getValue() / n;
-					double norm = (n == 1) ? 1 : n / log(n);
-					entropies.add(-1*(norm)*(x * log(x)));
-				}
-			}
+			double occurrence = occurrences.get(element);
+			double n = list.size();
+			double x = occurrence / n;
+			double norm = (n == 1) ? 1 : n / log(n);
+			entropies.add(-1*(norm)*(x * log(x)));
 		}
 		return entropies;
 	}
