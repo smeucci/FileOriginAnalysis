@@ -94,12 +94,14 @@ public class Test {
 			while (treeIterator.hasNext()) {
 				Tree treeChild = treeIterator.next();
 
-				Pair<Tree, Tree> toCheck = new Pair<Tree, Tree>();
-				toCheck.setFirst(getCorrespondingChildTree(treeChild, config.getFirst()));
-				toCheck.setSecond(getCorrespondingChildTree(treeChild, config.getSecond()));
-				
-				updateLikelihood(treeChild, toCheck);
-				computeLikelihood(treeChild, toCheck);
+				if (unusedTag(treeChild) == false) {
+					Pair<Tree, Tree> toCheck = new Pair<Tree, Tree>();
+					toCheck.setFirst(getCorrespondingChildTree(treeChild, config.getFirst()));
+					toCheck.setSecond(getCorrespondingChildTree(treeChild, config.getSecond()));
+					
+					updateLikelihood(treeChild, toCheck);
+					computeLikelihood(treeChild, toCheck);
+				}
 			}
 		}
 	}

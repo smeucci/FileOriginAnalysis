@@ -79,11 +79,18 @@ public class Utils {
 	}
 	
 	public static Boolean unusedField(String field) {
-		if (field.matches("stuff|creationTime|modificationTime|size|duration")) { //TODO add entryCount and sampleCount?
+		if (field.matches("stuff|creationTime|modificationTime|size|duration|entryCount|sampleCount")) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public static Boolean unusedTag(Tree tree) {
+		if (tree.getName().contains("xyz")) return true;
+		if (tree.getName().contains("unkn-5")) return true;
+		if (tree.getName().contains("udta") && tree.getNumChildren() == 1 && tree.getChildByName("xyz-4") != null) return true; 
+		return false;
 	}
 	
 	public static List<Pair<String, Double>> parseValueWeightCouples(String str) {
