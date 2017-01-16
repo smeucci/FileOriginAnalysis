@@ -3,12 +3,16 @@ package main;
 import testing.Test;
 import training.Train;
 import videoclass.VideoClass;
+import utils.JDBC;
 
 import org.apache.commons.cli.*;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+		
+		JDBC.updateDB("dataset/videos/");
+		
 		CommandLine cmd = parseArguments(args);
 		if (cmd.hasOption("train")) {
 			VideoClass classA = new VideoClass("A", cmd.getOptionValue("listA"));
