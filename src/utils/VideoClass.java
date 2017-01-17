@@ -1,4 +1,4 @@
-package videoclass;
+package utils;
 
 import java.util.List;
 
@@ -14,6 +14,12 @@ public class VideoClass {
 		this.name = name;
 		this.listUrl = listUrl;
 		this.xmlfiles = parseClassFilesList(listUrl);
+	}
+	
+	public VideoClass(String name, List<String> xmlfiles) {
+		this.name = name;
+		this.listUrl = null;
+		this.xmlfiles = xmlfiles;
 	}
 	
 	public String getName() {
