@@ -1,7 +1,13 @@
 package utils;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
+
+import com.vftlite.io.FileReaderSaver;
+
 public class Info {
 
+	String deviceID;
 	String manufacturer;
 	String model;
 	String os;
@@ -10,6 +16,39 @@ public class Info {
 	String pathtofile;
 	String pathtoxml;
 	String pathtoinfo;
+	
+	public Info(String url) throws Exception {
+		this.pathtofile = url;	
+		this.pathtoxml = url + ".xml";
+		url = url.replaceAll("\\.mp4|\\.MP4|\\.mov|\\.MOV", ".xml");
+		this.pathtoinfo = url;
+		
+		FileReaderSaver fileReader = new FileReaderSaver(url);
+		Document document = fileReader.getDocumentFromXMLFile();
+		Element root = document.getRootElement();
+		Element title = root.getChild("title");
+		this.title = title.getContent(0).getValue();
+		Element device = root.getChild("device");
+		Element deviceID = device.getChild("deviceID");
+		this.deviceID = deviceID.getContent(0).getValue();
+		Element manufacturer = device.getChild("manufacturer");
+		this.manufacturer = manufacturer.getContent(0).getValue();
+		Element model = device.getChild("model");
+		this.model = model.getContent(0).getValue();
+		Element os = device.getChild("os");
+		Element name = os.getChild("name");
+		this.os = name.getContent(0).getValue();
+		Element release = os.getChild("release");
+		this.version = release.getContent(0).getValue();
+	}
+	
+	public String getDeviceID() {
+		return this.deviceID;
+	}
+	
+	public void setDeviceID(String value) {
+		this.deviceID = value;
+	}
 		
 	public String getManufacturer() {
 		return this.manufacturer;
