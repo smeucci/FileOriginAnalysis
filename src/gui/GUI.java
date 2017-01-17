@@ -25,6 +25,7 @@ public class GUI {
 	    	public void actionPerformed(ActionEvent ae) {
 		        try {
 					JDBC.updateDB("/home/saverio/Projects/FileOriginAnalysis/dataset/videos");
+					System.out.println("Done.");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,7 +36,8 @@ public class GUI {
 	    initButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent ae) {
 		        try {
-					JDBC.initializeDB();;
+					JDBC.initializeDB();
+					System.out.println("Done.");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
