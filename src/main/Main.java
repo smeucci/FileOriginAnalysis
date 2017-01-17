@@ -2,17 +2,16 @@ package main;
 
 import testing.Test;
 import training.Train;
-import videoclass.VideoClass;
 import utils.JDBC;
+import utils.VideoClass;
+import gui.*;
 
 import org.apache.commons.cli.*;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		
-		JDBC.updateDB("dataset/videos/");
-		
+				
 		CommandLine cmd = parseArguments(args);
 		if (cmd.hasOption("train")) {
 			VideoClass classA = new VideoClass("A", cmd.getOptionValue("listA"));
@@ -28,6 +27,13 @@ public class Main {
 			} else {
 				new Test(url, configA, configB, verbose).test();
 			}	
+		} else if (cmd.hasOption("initialize")) {
+			JDBC.initializeDB();
+		} else if (cmd.hasOption("update")) {
+			String dataset = cmd.getOptionValue("input");
+			JDBC.updateDB(dataset);
+		} else if (cmd.hasOption("gui")) {
+			GUI.run();
 		}
 	}
 
@@ -38,6 +44,9 @@ public class Main {
 		OptionGroup group = new OptionGroup();
 		group.addOption(new Option("trn", "train", false, "train a binary classification problem"));
 		group.addOption(new Option("tst", "test", false, "predict the class of a xml file"));
+		group.addOption(new Option("u", "update", false, "update database"));
+		group.addOption(new Option("init", "initialize", false, "initialize database"));
+		group.addOption(new Option("g", "gui", false, "use interface"));
 		group.addOption(new Option("h", "help", false, "print help message"));
 		opts.addOptionGroup(group);
 		
@@ -69,7 +78,8 @@ public class Main {
 				.longOpt("input")
 				.argName("xml file")
 				.hasArg()
-				.desc("xml file for which compute the likelihood for class A and B, only for --test")
+				.desc("xml file for which compute the likelihood for class A and B, only for --test,"
+						+ "dataset path for --update")
 				.build();
 		opts.addOption(input_opt);
 		
@@ -117,6 +127,10 @@ public class Main {
 	    	System.exit(0);
 	    } else if (cl.hasOption("test") && (!cl.hasOption("i") ||!cl.hasOption("configA") || !cl.hasOption("configB"))) {
 	    	System.err.println("Missing options: [i | configA | configB]");
+	    	formatter.printHelp("foa", opts, true);
+	    	System.exit(0);
+	    } else if (cl.hasOption("update") && !cl.hasOption("i")) {
+	    	System.err.println("Missing option: i");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);
 	    }
