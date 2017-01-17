@@ -76,10 +76,10 @@ public class Main {
 		
 		Option input_opt = Option.builder("i")
 				.longOpt("input")
-				.argName("xml file")
+				.argName("xml/txt file or folder")
 				.hasArg()
-				.desc("xml file for which compute the likelihood for class A and B, only for --test,"
-						+ "dataset path for --update")
+				.desc("xml file or txt file with list of xml paths for which compute the likelihood for class A and B, only for --test,"
+						+ " dataset folder path for --update")
 				.build();
 		opts.addOption(input_opt);
 		
