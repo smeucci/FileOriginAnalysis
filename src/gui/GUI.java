@@ -18,48 +18,34 @@ public class GUI {
 
 	private static void displayJFrame()
 	  {
-	    frame = new JFrame("Our JButton listener example");
+	    frame = new JFrame("File Origin Analysis");
 
-	    // create our jbutton
-	    JButton UpdateButton = new JButton("Update");
-	    
-	    // add the listener to the jbutton to handle the "pressed" event
-	    UpdateButton.addActionListener(new ActionListener()
-	    {
-	      public void actionPerformed(ActionEvent e)
-	      {
-	        try {
-				JDBC.updateDB("/home/saverio/Projects/FileOriginAnalysis/dataset/videos");
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				System.out.println(e1.getMessage());
-			}
-	      }
+	    JButton updateButton = new JButton("Update");
+	    updateButton.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent ae) {
+		        try {
+					JDBC.updateDB("/home/saverio/Projects/FileOriginAnalysis/dataset/videos");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	    	}
 	    });
 	    
-	 // create our jbutton
 	    JButton initButton = new JButton("Init");
-	    
-	    // add the listener to the jbutton to handle the "pressed" event
-	    initButton.addActionListener(new ActionListener()
-	    {
-	      public void actionPerformed(ActionEvent e)
-	      {
-	        try {
-				JDBC.initializeDB();;
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				System.out.println(e1.getMessage());
-			}
-	      }
+	    initButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent ae) {
+		        try {
+					JDBC.initializeDB();;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		    }
 	    });
 
-	    // put the button on the frame
 	    frame.getContentPane().setLayout(new FlowLayout());
-	    frame.add(UpdateButton);
+	    frame.add(updateButton);
 	    frame.add(initButton);
 
-	    // set up the jframe, then display it
 	    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    frame.setPreferredSize(new Dimension(300, 200));
 	    frame.pack();
@@ -68,13 +54,10 @@ public class GUI {
 	  }
 	
 	public static void run() {
-		// schedule this for the event dispatch thread (edt)
-	    SwingUtilities.invokeLater(new Runnable()
-	    {
-	      public void run()
-	      {
-	        displayJFrame();
-	      }
+	    SwingUtilities.invokeLater(new Runnable() {
+	    	public void run() {
+	    		displayJFrame();
+	    	}
 	    });
 	}
 	
