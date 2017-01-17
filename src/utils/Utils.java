@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.jdom2.Document;
-import org.jdom2.Element;
 
 public class Utils {
 
@@ -104,31 +103,6 @@ public class Utils {
 			couples.add(new Pair<String, Double>(values[i], weights[i]));
 		}
 		return couples;
-	}
-	
-	public static Info parseInfo(String url) throws Exception {
-		Info info = new Info();
-		info.setPathToFile(url);
-		info.setPathToXml(url + ".xml");
-		url = url.replaceAll("\\.mp4|\\.MP4|\\.mov|\\.MOV", ".xml");
-		info.setPathToInfo(url);
-		
-		FileReaderSaver fileReader = new FileReaderSaver(url);
-		Document document = fileReader.getDocumentFromXMLFile();
-		Element root = document.getRootElement();
-		Element title = root.getChild("title");
-		info.setTitle(title.getContent(0).getValue());
-		Element device = root.getChild("device");
-		Element manufacturer = device.getChild("manufacturer");
-		info.setManufacturer(manufacturer.getContent(0).getValue());
-		Element model = device.getChild("model");
-		info.setModel(model.getContent(0).getValue());
-		Element os = device.getChild("os");
-		Element name = os.getChild("name");
-		info.setOS(name.getContent(0).getValue());
-		Element release = os.getChild("release");
-		info.setVersion(release.getContent(0).getValue());
-		return info;
 	}
 	
 }

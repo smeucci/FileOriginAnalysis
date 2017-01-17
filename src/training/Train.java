@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.vftlite.tree.Field;
 import com.vftlite.tree.Tree;
 
-import videoclass.VideoClass;
+import utils.VideoClass;
 import static com.vftlite.core.VFT.*;
 import static utils.Utils.*;
 
