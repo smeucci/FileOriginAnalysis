@@ -12,7 +12,7 @@ import static com.vftlite.core.VFT.*;
 
 public class JDBC {
 
-	public static final String URL = "jdbc:sqlite:" + System.getProperty("java.class.path").split("bin|target")[0] + "dataset/db/database.db";  
+	public static final String URL = "jdbc:sqlite:" + System.getProperty("java.class.path").split("bin|target")[0] + "dataset/db/database.db";  //TODO pass the path
 	public static final String DRIVER = "org.sqlite.JDBC";
 	
 	public static void initializeDB() throws Exception {
