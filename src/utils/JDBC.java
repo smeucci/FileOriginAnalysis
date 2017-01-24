@@ -19,9 +19,9 @@ public class JDBC {
 
 		String sqlDeviceModel = "CREATE TABLE IF NOT EXISTS DeviceModel (\n"
 				+ " id integer PRIMARY KEY AUTOINCREMENT,\n"
-				+ " maker text NOT NULL,\n"
+				+ " brand text NOT NULL,\n"
 				+ " model text NOT NULL,\n"
-				+ " UNIQUE(maker, model)\n"
+				+ " UNIQUE(brand, model)\n"
 				+ " );";
 		
 		String sqlOperatingSystem = "CREATE TABLE IF NOT EXISTS OperatingSystem (\n"
@@ -110,10 +110,10 @@ public class JDBC {
 	
 	public static void insertVideo(Info info) throws Exception {
 		
-		String sqlDeviceModel = "INSERT INTO DeviceModel(id, maker, model)\n"
+		String sqlDeviceModel = "INSERT INTO DeviceModel(id, brand, model)\n"
 				+ " SELECT NULL, '" + info.getManufacturer() + "', '" + info.getModel() + "'\n"
 				+ " WHERE NOT EXISTS(SELECT 1 FROM DeviceModel\n"
-				+ " WHERE maker = '"+ info.getManufacturer() +"' AND model = '" + info.getModel() + "');";
+				+ " WHERE brand = '"+ info.getManufacturer() +"' AND model = '" + info.getModel() + "');";
 		
 		String sqlOperatingSystem = "INSERT INTO OperatingSystem(id, name, version)\n"
 				+ " SELECT NULL, '" + info.getOS() + "', '" + info.getVersion() + "'\n"
@@ -127,7 +127,7 @@ public class JDBC {
 				+ " VALUES (NULL,\n"
 				+ " '" + info.getTitle() + "',\n"
 				+ " '" + info.getDeviceID() + "',\n"
-				+ " (SELECT id FROM DeviceModel WHERE maker = '" + info.getManufacturer() + "' AND model = '" + info.getModel() + "'),\n"
+				+ " (SELECT id FROM DeviceModel WHERE brand = '" + info.getManufacturer() + "' AND model = '" + info.getModel() + "'),\n"
 				+ " (SELECT id FROM OperatingSystem WHERE name = '" + info.getOS() + "' AND version = '" + info.getVersion() + "'),\n"
 				+ " '" + info.getPathToFile() + "',\n"
 				+ " '" + info.getPathToXml() + "',\n"
