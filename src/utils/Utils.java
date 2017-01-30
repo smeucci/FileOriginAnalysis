@@ -9,19 +9,36 @@ import com.vftlite.tree.Field;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import org.jdom2.Document;
+import org.json.*;
 
 public class Utils {
 
 	private static Logger logger = new Logger();
+	
+	public static List<String> parseJSONClassFilesList(String url) throws Exception {
+		String text = new String(Files.readAllBytes(Paths.get(url)), StandardCharsets.UTF_8);
+		JSONObject json = new JSONObject(text);
+		JSONArray list = (JSONArray) json.get("list");
+		Iterator<?> itr = list.iterator();
+		List<String> videos = new ArrayList<String>();
+		while (itr.hasNext()) {
+			JSONObject video = (JSONObject) itr.next();
+			String filename = video.getString("video");
+			videos.add(filename);
+		}
+		return videos;
+	}
 	
 	public static List<String> parseClassFilesList(String url) {
 		//TODO if files in the list are not xml but mp4, convert them

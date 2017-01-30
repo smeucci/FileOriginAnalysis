@@ -11,7 +11,7 @@ import org.apache.commons.cli.*;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-				
+						
 		CommandLine cmd = parseArguments(args);
 		if (cmd.hasOption("train")) {
 			VideoClass classA = new VideoClass("A", cmd.getOptionValue("listA"));
@@ -52,17 +52,17 @@ public class Main {
 		
 		Option listA_opt = Option.builder("lA")
 				.longOpt("listA")
-				.argName("txt file")
+				.argName("txt/json file")
 				.hasArg()
-				.desc("text file containing a list of xml file for class A, only for --train")
+				.desc("text/json file containing a list of xml file for class A, only for --train")
 				.build();
 		opts.addOption(listA_opt);
 		
 		Option listB = Option.builder("lB")
 				.longOpt("listB")
-				.argName("txt file")
+				.argName("txt/json file")
 				.hasArg()
-				.desc("text file containing a list of xml file for class B, only for --train")
+				.desc("text/json file containing a list of xml file for class B, only for --train")
 				.build();
 		opts.addOption(listB);
 		

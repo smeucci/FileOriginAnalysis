@@ -10,10 +10,14 @@ public class VideoClass {
 	private String listUrl;
 	private List<String> xmlfiles;
 	
-	public VideoClass(String name, String listUrl) {
+	public VideoClass(String name, String listUrl) throws Exception {
 		this.name = name;
 		this.listUrl = listUrl;
-		this.xmlfiles = parseClassFilesList(listUrl);
+		if (listUrl.endsWith(".txt")) {
+			this.xmlfiles = parseClassFilesList(listUrl);
+		} else if (listUrl.endsWith(".json")) {
+			this.xmlfiles = parseJSONClassFilesList(listUrl);
+		}
 	}
 	
 	public VideoClass(String name, List<String> xmlfiles) {
