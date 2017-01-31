@@ -3,6 +3,8 @@ package utils;
 import static java.lang.Math.log;
 import static utils.Utils.round;
 
+import org.json.JSONObject;
+
 public class Logger {
 
 	public void handleException(Exception e) {
@@ -20,8 +22,13 @@ public class Logger {
 	}
 	
 	public void handleTestResult(String filename, double likelihood) {
-		System.out.println("# Is video '" + filename + "' of class A?");
-		System.out.println("# Likelihood: " + likelihood + ", Loglikelihood: " + log(likelihood));
+		//System.out.println("# Is video '" + filename + "' of class A?");
+		//System.out.println("# Likelihood: " + likelihood + ", Loglikelihood: " + log(likelihood));
+		JSONObject res = new JSONObject();
+		res.put("filename", filename);
+		res.put("likelihood", likelihood);
+		res.put("loglikelihood", log(likelihood));
+		System.out.print(res.toString() + "\n");
 	}
 	
 	public void handleTestResult(String filename, String label, String predictedLabel, double likelihood) {
