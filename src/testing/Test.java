@@ -182,13 +182,13 @@ public class Test {
 	protected double ratio(double numerator, double denominator) {
 		double ratio;
 		if (denominator == 0 && numerator != 0) {
-			ratio = round((numerator / (1 / (double) this.numB)), 4);
+			ratio = round((numerator / (1 / ((double) this.numA + 1))), 4);
 			if (verbose) logger.handleDebug(ratio, numerator, denominator, 1);
 		} else if (numerator == 0 && denominator != 0) {
-			ratio = round(((1 / (double) this.numA) / denominator), 4);
+			ratio = round(((1 / ((double) this.numB + 1)) / denominator), 4);
 			if (verbose) logger.handleDebug(ratio, numerator, denominator, 2);
 		} else if (numerator == 0 && denominator == 0) {
-			ratio = round((1 / (double) this.numA), 4); //TODO 1?
+			ratio = round((1 / ((double) this.numA + 1)), 4); //TODO 1?
 			if (verbose) logger.handleDebug(ratio, numerator, denominator, 34);
 		} else {
 			ratio = round((numerator / denominator), 4);
