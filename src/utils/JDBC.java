@@ -12,10 +12,10 @@ import static com.vftlite.core.VFT.*;
 
 public class JDBC {
 
-	public static final String URL = "jdbc:sqlite:" + System.getProperty("java.class.path").split("bin|target")[0] + "dataset/db/database.db";  //TODO pass the path
+	//public static final String URL = "jdbc:sqlite:" + System.getProperty("java.class.path").split("bin|target")[0] + "dataset/db/database.db";  //TODO pass the path
 	public static final String DRIVER = "org.sqlite.JDBC";
 	
-	public static void initializeDB() throws Exception {
+	public static void initializeDB(String URL) throws Exception {
 
 		String sqlDeviceModel = "CREATE TABLE IF NOT EXISTS DeviceModel (\n"
 				+ " id integer PRIMARY KEY AUTOINCREMENT,\n"
@@ -45,19 +45,19 @@ public class JDBC {
 				+ " FOREIGN KEY(operating_system) REFERENCES OperatingSystem(id)\n"
 				+ " )";
 		
-		executeQuery(sqlDeviceModel);
-		executeQuery(sqlOperatingSystem);
-		executeQuery(sqlVideoFile);
+		executeQuery(sqlDeviceModel, URL);
+		executeQuery(sqlOperatingSystem, URL);
+		executeQuery(sqlVideoFile, URL);
 		
 		System.out.println("Database initialized at " + URL.replace("jdbc:sqlite:", ""));
 		
 	}
 	
-	public static boolean executeQuery(String query) throws Exception {
+	public static boolean executeQuery(String query, String URL) throws Exception {
 	    Connection conn = null;
 	    Statement stmt = null;
 	    try {
-	    	conn = getConnection();
+	    	conn = getConnection(URL);
 	        stmt = conn.createStatement();
 	        stmt.execute(query);
 	        return true;
@@ -69,7 +69,7 @@ public class JDBC {
 	    }
 	}
 	
-	private static Connection getConnection() throws ClassNotFoundException {  
+	private static Connection getConnection(String URL) throws ClassNotFoundException {  
 		Class.forName(DRIVER);  
 	    Connection conn = null;  
 	    try {  
@@ -82,16 +82,16 @@ public class JDBC {
 	    return conn;
 	}
 	
-	public static void updateDB(String pathfolder) throws Exception {
+	public static void updateDB(String pathfolder, String URL) throws Exception {
 		File folder = new File(pathfolder);
 		if (!folder.exists() || !folder.isDirectory()) {
 			System.err.println("Could not find the dataset folder at '" + pathfolder + "'");
 		} else {
-			update(folder);
+			update(folder, URL);
 		}
 	}
 	
-	private static void update(File folder) throws Exception {
+	private static void update(File folder, String URL) throws Exception {
 		File[] files = folder.listFiles();
 		for (File f: files) {
 			if (f.isFile() && !f.getName().matches(".*?\\.txt.*|.*?\\.xml.*") && !f.getName().startsWith(".")) {
@@ -102,13 +102,13 @@ public class JDBC {
 				//parse info xml
 				Info info = new Info(f.getAbsolutePath());
 				//insert to db
-				insertVideo(info);
+				insertVideo(info, URL);
 				System.out.println("updated: " + f.getAbsolutePath());
 			}
 		}
 	}
 	
-	public static void insertVideo(Info info) throws Exception {
+	public static void insertVideo(Info info, String URL) throws Exception {
 		
 		String sqlDeviceModel = "INSERT INTO DeviceModel(id, brand, model)\n"
 				+ " SELECT NULL, '" + info.getManufacturer() + "', '" + info.getModel() + "'\n"
@@ -120,8 +120,8 @@ public class JDBC {
 				+ " WHERE NOT EXISTS(SELECT 1 FROM OperatingSystem\n"
 				+ " WHERE name = '"+ info.getOS() +"' AND version = '" + info.getVersion() + "');";
 		
-		executeQuery(sqlDeviceModel);
-		executeQuery(sqlOperatingSystem);
+		executeQuery(sqlDeviceModel, URL);
+		executeQuery(sqlOperatingSystem, URL);
 		
 		String sqlVideoFile = "INSERT OR IGNORE INTO VideoFile(id, title, device_id, device_model, operating_system, pathtofile, pathtoxml, pathtoinfo)\n"
 				+ " VALUES (NULL,\n"
@@ -134,7 +134,7 @@ public class JDBC {
 				+ " '" + info.getPathToInfo() + "'\n"
 				+ " );";
 		
-		executeQuery(sqlVideoFile);
+		executeQuery(sqlVideoFile, URL);
 		
 	}
 	

@@ -4,7 +4,6 @@ import testing.Test;
 import training.Train;
 import utils.JDBC;
 import utils.VideoClass;
-import gui.*;
 
 import org.apache.commons.cli.*;
 
@@ -28,12 +27,12 @@ public class Main {
 				new Test(url, configA, configB, verbose).test();
 			}	
 		} else if (cmd.hasOption("initialize")) {
-			JDBC.initializeDB();
+			String dbpath = "jdbc:sqlite:" + cmd.getOptionValue("input");
+			JDBC.initializeDB(dbpath);
 		} else if (cmd.hasOption("update")) {
 			String dataset = cmd.getOptionValue("input");
-			JDBC.updateDB(dataset);
-		} else if (cmd.hasOption("gui")) {
-			GUI.run();
+			String dbpath = "jdbc:sqlite:" + cmd.getOptionValue("output");
+			JDBC.updateDB(dataset, dbpath);
 		}
 	}
 
@@ -46,7 +45,6 @@ public class Main {
 		group.addOption(new Option("tst", "test", false, "predict the class of a xml file"));
 		group.addOption(new Option("u", "update", false, "update database"));
 		group.addOption(new Option("init", "initialize", false, "initialize database"));
-		group.addOption(new Option("g", "gui", false, "use interface"));
 		group.addOption(new Option("h", "help", false, "print help message"));
 		opts.addOptionGroup(group);
 		
@@ -121,16 +119,20 @@ public class Main {
 	    	System.err.println("No options given");
 	    	formatter.printHelp("foa", opts, true);
 	        System.exit(0);
-	    } else if (cl.hasOption("train") && (!cl.hasOption("listA") ||!cl.hasOption("listB") || !cl.hasOption("o"))) {
+	    } else if (cl.hasOption("train") && (!cl.hasOption("listA") || !cl.hasOption("listB") || !cl.hasOption("o"))) {
 	    	System.err.println("Missing options: [listA | listB | o]");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);
-	    } else if (cl.hasOption("test") && (!cl.hasOption("i") ||!cl.hasOption("configA") || !cl.hasOption("configB"))) {
+	    } else if (cl.hasOption("test") && (!cl.hasOption("i") || !cl.hasOption("configA") || !cl.hasOption("configB"))) {
 	    	System.err.println("Missing options: [i | configA | configB]");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);
-	    } else if (cl.hasOption("update") && !cl.hasOption("i")) {
+	    } else if (cl.hasOption("init") && !cl.hasOption("i")) {
 	    	System.err.println("Missing option: i");
+	    	formatter.printHelp("foa", opts, true);
+	    	System.exit(0);
+	    } else if (cl.hasOption("update") && (!cl.hasOption("i") || !cl.hasOption("o"))) {
+	    	System.err.println("Missing option: i | o");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);
 	    }
