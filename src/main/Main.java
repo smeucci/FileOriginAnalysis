@@ -29,10 +29,14 @@ public class Main {
 		} else if (cmd.hasOption("initialize")) {
 			String dbpath = "jdbc:sqlite:" + cmd.getOptionValue("input");
 			JDBC.initializeDB(dbpath);
-		} else if (cmd.hasOption("update")) {
+		} else if (cmd.hasOption("update-training")) {
 			String dataset = cmd.getOptionValue("input");
 			String dbpath = "jdbc:sqlite:" + cmd.getOptionValue("output");
-			JDBC.updateDB(dataset, dbpath);
+			JDBC.updateDB(dataset, dbpath, "training");
+		} else if (cmd.hasOption("update-testing")) {
+			String dataset = cmd.getOptionValue("input");
+			String dbpath = "jdbc:sqlite:" + cmd.getOptionValue("output");
+			JDBC.updateDB(dataset, dbpath, "testing");
 		}
 	}
 
@@ -43,7 +47,8 @@ public class Main {
 		OptionGroup group = new OptionGroup();
 		group.addOption(new Option("trn", "train", false, "train a binary classification problem"));
 		group.addOption(new Option("tst", "test", false, "predict the class of a xml file"));
-		group.addOption(new Option("u", "update", false, "update database"));
+		group.addOption(new Option("utr", "update-training", false, "update trainingdatabase"));
+		group.addOption(new Option("ute", "update-testing", false, "update testing database"));
 		group.addOption(new Option("init", "initialize", false, "initialize database"));
 		group.addOption(new Option("h", "help", false, "print help message"));
 		opts.addOptionGroup(group);
@@ -131,7 +136,11 @@ public class Main {
 	    	System.err.println("Missing option: i");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);
-	    } else if (cl.hasOption("update") && (!cl.hasOption("i") || !cl.hasOption("o"))) {
+	    } else if (cl.hasOption("update-training") && (!cl.hasOption("i") || !cl.hasOption("o"))) {
+	    	System.err.println("Missing option: i | o");
+	    	formatter.printHelp("foa", opts, true);
+	    	System.exit(0);
+	    } else if (cl.hasOption("update-testing") && (!cl.hasOption("i") || !cl.hasOption("o"))) {
 	    	System.err.println("Missing option: i | o");
 	    	formatter.printHelp("foa", opts, true);
 	    	System.exit(0);

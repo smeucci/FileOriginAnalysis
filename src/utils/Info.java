@@ -20,10 +20,9 @@ public class Info {
 	public Info(String url) throws Exception {
 		this.pathtofile = url;	
 		this.pathtoxml = url + ".xml";
-		url = url.replaceAll("\\.mp4|\\.MP4|\\.mov|\\.MOV", ".xml");
-		this.pathtoinfo = url;
+		this.pathtoinfo = url.replaceAll("\\.mp4|\\.MP4|\\.mov|\\.MOV", ".xml");
 		
-		FileReaderSaver fileReader = new FileReaderSaver(url);
+		FileReaderSaver fileReader = new FileReaderSaver(this.pathtoinfo);
 		Document document = fileReader.getDocumentFromXMLFile();
 		Element root = document.getRootElement();
 		Element title = root.getChild("title");

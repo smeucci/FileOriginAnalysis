@@ -31,7 +31,7 @@ public class JDBC {
 				+ " UNIQUE(name, version)\n"
 				+ " );";
 		
-		String sqlVideoFile = "CREATE TABLE IF NOT EXISTS VideoFile (\n"
+		String sqlVideoFileTraining = "CREATE TABLE IF NOT EXISTS VideoFile (\n"
 				+ " id integer PRIMARY KEY AUTOINCREMENT,\n"
 				+ " title text NOT NULL,\n"
 				+ " device_id text NOT NULL,\n"
@@ -45,9 +45,24 @@ public class JDBC {
 				+ " FOREIGN KEY(operating_system) REFERENCES OperatingSystem(id)\n"
 				+ " )";
 		
+		String sqlVideoFileTesting = "CREATE TABLE IF NOT EXISTS VideoFileTest (\n"
+				+ " id integer PRIMARY KEY AUTOINCREMENT,\n"
+				+ " title text NOT NULL,\n"
+				+ " device_id text NOT NULL,\n"
+				+ " brand text NOT NULL,\n"
+				+ " model text NOT NULL,\n"
+				+ " os text NOT NULL,\n"
+				+ " version text NOT NULL,\n"
+				+ " pathtofile text NOT NULL,\n"
+				+ " pathtoxml text NOT NULL,\n"
+				+ " pathtoinfo text NOT NULL,\n"
+				+ " UNIQUE(title)\n"
+				+ " )";
+		
 		executeQuery(sqlDeviceModel, URL);
 		executeQuery(sqlOperatingSystem, URL);
-		executeQuery(sqlVideoFile, URL);
+		executeQuery(sqlVideoFileTraining, URL);
+		executeQuery(sqlVideoFileTesting, URL);
 		
 		System.out.println("Database initialized at " + URL.replace("jdbc:sqlite:", ""));
 		
@@ -82,16 +97,16 @@ public class JDBC {
 	    return conn;
 	}
 	
-	public static void updateDB(String pathfolder, String URL) throws Exception {
+	public static void updateDB(String pathfolder, String URL, String type) throws Exception {
 		File folder = new File(pathfolder);
 		if (!folder.exists() || !folder.isDirectory()) {
 			System.err.println("Could not find the dataset folder at '" + pathfolder + "'");
 		} else {
-			update(folder, URL);
+			update(folder, URL, type);
 		}
 	}
 	
-	private static void update(File folder, String URL) throws Exception {
+	private static void update(File folder, String URL, String type) throws Exception {
 		File[] files = folder.listFiles();
 		for (File f: files) {
 			if (f.isFile() && !f.getName().matches(".*?\\.txt.*|.*?\\.xml.*") && !f.getName().startsWith(".")) {
@@ -102,13 +117,17 @@ public class JDBC {
 				//parse info xml
 				Info info = new Info(f.getAbsolutePath());
 				//insert to db
-				insertVideo(info, URL);
+				if (type.equals("training")) {
+					insertVideoTraining(info, URL);
+				} else if (type.equals("testing")) {
+					insertVideoTesting(info, URL);
+				}
 				System.out.println("updated: " + f.getAbsolutePath());
 			}
 		}
 	}
 	
-	public static void insertVideo(Info info, String URL) throws Exception {
+	public static void insertVideoTraining(Info info, String URL) throws Exception {
 		
 		String sqlDeviceModel = "INSERT INTO DeviceModel(id, brand, model)\n"
 				+ " SELECT NULL, '" + info.getManufacturer() + "', '" + info.getModel() + "'\n"
@@ -129,6 +148,25 @@ public class JDBC {
 				+ " '" + info.getDeviceID() + "',\n"
 				+ " (SELECT id FROM DeviceModel WHERE brand = '" + info.getManufacturer() + "' AND model = '" + info.getModel() + "'),\n"
 				+ " (SELECT id FROM OperatingSystem WHERE name = '" + info.getOS() + "' AND version = '" + info.getVersion() + "'),\n"
+				+ " '" + info.getPathToFile() + "',\n"
+				+ " '" + info.getPathToXml() + "',\n"
+				+ " '" + info.getPathToInfo() + "'\n"
+				+ " );";
+		
+		executeQuery(sqlVideoFile, URL);
+		
+	}
+	
+	public static void insertVideoTesting(Info info, String URL) throws Exception {
+		
+		String sqlVideoFile = "INSERT OR IGNORE INTO VideoFileTest(id, title, device_id, brand, model, os, version, pathtofile, pathtoxml, pathtoinfo)\n"
+				+ " VALUES (NULL,\n"
+				+ " '" + info.getTitle() + "',\n"
+				+ " '" + info.getDeviceID() + "',\n"
+				+ " '" + info.getManufacturer() + "',\n"
+			    + " '" + info.getModel() + "',\n"
+				+ " '" + info.getOS() + "',\n"
+				+ " '" + info.getVersion() + "',\n"
 				+ " '" + info.getPathToFile() + "',\n"
 				+ " '" + info.getPathToXml() + "',\n"
 				+ " '" + info.getPathToInfo() + "'\n"
