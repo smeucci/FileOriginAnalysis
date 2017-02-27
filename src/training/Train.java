@@ -74,7 +74,7 @@ public class Train {
 			Iterator<Tree> configIterator = config.iterator();
 			while (configIterator.hasNext()) {
 				Tree configChild = configIterator.next();				
-				Tree toCheck = getCorrespondingChildTree(configChild, tree);
+				Tree toCheck = getCorrespondingChildTree(configChild, tree, false);
 				
 				if (toCheck != null) {
 					updateWeights(configChild, toCheck, numOfVideos);
