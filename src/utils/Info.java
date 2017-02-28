@@ -34,11 +34,17 @@ public class Info {
 		this.manufacturer = manufacturer.getContent(0).getValue();
 		Element model = device.getChild("model");
 		this.model = model.getContent(0).getValue();
-		Element os = device.getChild("os");
-		Element name = os.getChild("name");
-		this.os = name.getContent(0).getValue();
-		Element release = os.getChild("release");
-		this.version = release.getContent(0).getValue();
+		try {
+			Element os = device.getChild("os");
+			Element name = os.getChild("name");
+			this.os = name.getContent(0).getValue();
+			Element release = os.getChild("release");
+			this.version = release.getContent(0).getValue();
+		} catch (Exception e) {
+			this.os = "null";
+			this.version = "null";
+		}
+		
 	}
 	
 	public String getDeviceID() {
