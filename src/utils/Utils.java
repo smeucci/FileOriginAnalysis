@@ -7,6 +7,7 @@ import com.vftlite.tree.Node;
 import com.vftlite.tree.Tree;
 import com.vftlite.tree.Field;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.jdom2.Document;
+import org.jdom2.Element;
 import org.json.*;
 
 public class Utils {
@@ -120,6 +122,139 @@ public class Utils {
 			couples.add(new Pair<String, Double>(values[i], weights[i]));
 		}
 		return couples;
+	}
+	
+	public static void convert(String datasetPath, String outputPath) throws Exception {
+		File datasetFolder = new File(datasetPath);
+		if (!datasetFolder.exists() || !datasetFolder.isDirectory()) {
+			System.err.println("Could not find the dataset folder at '" + datasetPath + "'");
+		} else if (!new File(outputPath).exists() || !new File(outputPath).isDirectory()) {
+			System.err.println("Could not find the output folder at '" + outputPath + "'");
+		} else {
+			System.out.println("Converting the dataset at '" + datasetPath + "'");
+			convertDataset(datasetFolder, outputPath, 0);
+		}
+	}
+	
+	public static int convertDataset(File folder, String outputPath, int id) throws Exception {
+		File[] files = folder.listFiles();
+		for (File f: files) {
+			if (f.isFile() && !f.getName().startsWith(".")) {
+				id = createInfo(f.getAbsolutePath(), f.getParentFile().getParent(), outputPath, id);
+			} else if (f.isDirectory() && !f.getName().toLowerCase().endsWith(".not") && !f.getName().toLowerCase().endsWith("youtube")) {
+				File subfolder = new File(f.getAbsolutePath());
+				id = convertDataset(subfolder, outputPath, id);
+			}
+		}
+		return id;
+	}
+	
+	public static int createInfo(String filename, String type, String output, int id) throws Exception {
+		String[] splits = type.split("/");
+		String[] codes = decode(splits[splits.length-1]);
+		
+		Element track = new Element("track");
+		Element device = new Element("device");
+		track.addContent(device);
+		
+		
+		Element deviceID = new Element("deviceID");
+		deviceID.addContent("" + id + "");
+		Element manufacturer = new Element("manufacturer");
+		manufacturer.addContent(codes[0]);
+		Element model = new Element("model");
+		model.addContent(codes[1]);
+		device.addContent(deviceID);
+		device.addContent(manufacturer);
+		device.addContent(model);
+		
+		Element title = new Element("title");
+		title.addContent(filename);
+		track.addContent(title);
+		
+		FileReaderSaver fileSaver = new FileReaderSaver("" + id + "", output);
+		fileSaver.saveOnFile(new Document(track));
+		
+		File source = new File(filename);
+		String[] spl = filename.split("\\.");
+		String ext = spl[spl.length-1];
+		File dest = new File(output + "/" + id + "." + ext);
+		try {
+			Files.copy(source.toPath(), dest.toPath());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(codes[0] + " " + codes[1]);
+		System.out.println("-- " + filename);
+		id++;
+		return id;
+	}
+	
+	public static String[] decode(String name) {
+		
+		String[] codes = {"", ""};
+		
+		switch (name) {
+		case "galaxys3_dasara":
+			codes[0] = "samsung";
+			codes[1] = "galaxys3";
+			break;
+		case "galaxys3mini_giulia":
+			codes[0] = "samsung";
+			codes[1] = "galaxys3mini";
+			break;
+		case "galaxys3mini_ilaria":
+			codes[0] = "samsung";
+			codes[1] = "galaxys3mini";
+			break;
+		case "galaxys4mini_alessia":
+			codes[0] = "samsung";
+			codes[1] = "galaxys4mini";
+			break;
+		case "galaxytab3_marco":
+			codes[0] = "samsung";
+			codes[1] = "galaxytab3";
+			break;
+		case "galaxytaba_ilaria":
+			codes[0] = "samsung";
+			codes[1] = "galaxytaba";
+			break;
+		case "galaxytrendplus_davide":
+			codes[0] = "samsung";
+			codes[1] = "galaxytrendplus";
+			break;
+		case "huaweig6_rossana":
+			codes[0] = "huawei";
+			codes[1] = "g6";
+			break;
+		case "ipad2_giulia":
+			codes[0] = "apple";
+			codes[1] = "ipad2";
+			break;
+		case "ipadmini_marco":
+			codes[0] = "apple";
+			codes[1] = "ipadmini";
+			break;
+		case "iphone4s_davide":
+			codes[0] = "apple";
+			codes[1] = "iphone4s";
+			break;
+		case "iphone5c_bianca":
+			codes[0] = "apple";
+			codes[1] = "iphone5c";
+			break;
+		case "iphone5_giovanni":
+			codes[0] = "apple";
+			codes[1] = "iphone5";
+			break;
+		case "iphone6_marco":
+			codes[0] = "apple";
+			codes[1] = "iphone6";
+			break;
+		}
+		
+		return codes;
 	}
 	
 }
