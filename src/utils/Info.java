@@ -31,15 +31,15 @@ public class Info {
 		Element deviceID = device.getChild("deviceID");
 		this.deviceID = deviceID.getContent(0).getValue();
 		Element manufacturer = device.getChild("manufacturer");
-		this.manufacturer = manufacturer.getContent(0).getValue();
+		this.manufacturer = manufacturer.getContent(0).getValue().toLowerCase();
 		Element model = device.getChild("model");
-		this.model = model.getContent(0).getValue();
+		this.model = model.getContent(0).getValue().toLowerCase();
 		try {
 			Element os = device.getChild("os");
 			Element name = os.getChild("name");
-			this.os = name.getContent(0).getValue();
+			this.os = name.getContent(0).getValue().toLowerCase();
 			Element release = os.getChild("release");
-			this.version = release.getContent(0).getValue();
+			this.version = release.getContent(0).getValue().toLowerCase();
 		} catch (Exception e) {
 			this.os = "null";
 			this.version = "null";
