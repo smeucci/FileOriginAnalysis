@@ -3,7 +3,6 @@ package utils;
 import static java.lang.Math.log;
 import static utils.Utils.round;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Logger {
@@ -27,12 +26,23 @@ public class Logger {
 		//System.out.println("# Likelihood: " + likelihood + ", Loglikelihood: " + log(likelihood));
 		JSONObject res = new JSONObject();
 		res.put("filename", filename);
-		res.put("likelihood", likelihood);
-		try {
-			res.put("loglikelihood", log(likelihood));
-		} catch (JSONException e) {
-			res.put("loglikelihood", "-INFINITY");
+		
+		if (likelihood == Double.POSITIVE_INFINITY) {
+			res.put("likelihood", "INFINITY");
+		} else if (likelihood == Double.NEGATIVE_INFINITY) {
+			res.put("likelihood", "-INFINITY");
+		} else {
+			res.put("likelihood", likelihood);
 		}
+		
+		if (log(likelihood) == Double.POSITIVE_INFINITY) {
+			res.put("loglikelihood", "INFINITY");
+		} else if (log(likelihood) == Double.NEGATIVE_INFINITY) {
+			res.put("loglikelihood", "-INFINITY");
+		} else {
+			res.put("loglikelihood", log(likelihood));
+		}
+
 		System.out.print(res.toString() + "\n");
 	}
 	
