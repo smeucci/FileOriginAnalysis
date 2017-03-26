@@ -2,12 +2,11 @@ package likelihood;
 
 import static com.vftlite.core.VFT.getCorrespondingChildTree;
 import static com.vftlite.util.Util.unusedAtom;
+import static com.vftlite.util.Util.unusedField;
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
 import static utils.Utils.parseValueWeightCouples;
 import static utils.Utils.round;
-import static utils.Utils.unusedField;
-import static utils.Utils.unusedTag;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,7 +49,7 @@ public class StandardLikelihood implements Likelihood {
 			while (treeIterator.hasNext()) {
 				Tree treeChild = treeIterator.next();
 				unused = (unused) ? true : unusedAtom(treeChild);
-				if (unusedTag(treeChild) == false) {
+				if (unusedAtom(treeChild) == false) {
 					Pair<Tree, Tree> toCheck = new Pair<Tree, Tree>();
 					toCheck.setFirst(getCorrespondingChildTree(treeChild, config.getFirst(), unused));
 					toCheck.setSecond(getCorrespondingChildTree(treeChild, config.getSecond(), unused));
