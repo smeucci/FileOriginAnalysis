@@ -1,6 +1,6 @@
 package utils;
 
-import static java.lang.Math.log;
+import static java.lang.Math.log10;
 import static utils.Utils.round;
 
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public class Logger {
 	
 	public void handleTestResult(String filename, double likelihood) {
 		//System.out.println("# Is video '" + filename + "' of class A?");
-		//System.out.println("# Likelihood: " + likelihood + ", Loglikelihood: " + log(likelihood));
+		//System.out.println("# Likelihood: " + likelihood + ", Loglikelihood: " + log10(likelihood));
 		JSONObject res = new JSONObject();
 		res.put("filename", filename);
 		
@@ -35,12 +35,12 @@ public class Logger {
 			res.put("likelihood", likelihood);
 		}
 		
-		if (log(likelihood) == Double.POSITIVE_INFINITY) {
+		if (log10(likelihood) == Double.POSITIVE_INFINITY) {
 			res.put("loglikelihood", "INFINITY");
-		} else if (log(likelihood) == Double.NEGATIVE_INFINITY) {
+		} else if (log10(likelihood) == Double.NEGATIVE_INFINITY) {
 			res.put("loglikelihood", "-INFINITY");
 		} else {
-			res.put("loglikelihood", log(likelihood));
+			res.put("loglikelihood", log10(likelihood));
 		}
 
 		System.out.print(res.toString() + "\n");
@@ -51,7 +51,7 @@ public class Logger {
 		System.out.println(" - predicted class: " + predictedLabel + "\n"
 						  + " - true class: " + label + "\n"
 						  + " - likelihood: " + likelihood + "\n"
-						  + " - Loglikelihood: " + log(likelihood));
+						  + " - Loglikelihood: " + log10(likelihood));
 	}
 	
 	public void handleAccuracy(int correctlyPredicted, int tot) {
